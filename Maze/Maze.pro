@@ -17,7 +17,8 @@ SOURCES += \
 HEADERS += \
     mainwindow.h \
     matrix.h \
-    mazewidget.h
+    mazewidget.h \
+    s21_vector.h
 
 FORMS += \
     mainwindow.ui

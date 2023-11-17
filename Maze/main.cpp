@@ -10,8 +10,7 @@ int main(int argc, char *argv[]) {
     Matrix myMatrix(numRows, numCols);
 
     // зполнение матрицы по вертикали и горизонтали
-    myMatrix.setVerticalValue(numRows, numCols);
-    myMatrix.setHorizontalValue(numRows, numCols);
+    myMatrix.generateMaze();
 
     // создание виджета и установка матрицы
     MazeWidget mazeWidget;
