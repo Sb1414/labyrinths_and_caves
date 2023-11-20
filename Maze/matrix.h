@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <fstream>
 
 class Matrix {
 private:
@@ -22,6 +23,7 @@ public:
     void checkSetInRow(int i);
     void checkHorizontalInRow(int i);
     void generateMaze();
+    void saveMaze(const std::string& fileName) const;
 };
 
 #endif // MATRIX_H

@@ -9,6 +9,10 @@ class MazeWidget : public QWidget {
 
 private:
     Matrix mazeMatrix;
+    QVector<QPoint> solutionPath;
+
+public slots:
+    void setSolution(const QVector<QPoint>& solution);
 
 public:
     MazeWidget(QWidget *parent = nullptr);
