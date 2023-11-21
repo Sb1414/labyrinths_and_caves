@@ -7,19 +7,23 @@
 class MazeWidget : public QWidget {
     Q_OBJECT
 
-private:
-    Matrix mazeMatrix;
-    QVector<QPoint> solutionPath;
+    private:
+        Matrix mazeMatrix;
+        QVector<QPoint> solutionPath;
 
-public slots:
-    void setSolution(const QVector<QPoint>& solution);
+    public slots:
+        void setSolution(const QVector<QPoint>& solution);
+        void drawMaze(QPainter& painter);
+        void drawSolution(QPainter& painter);
 
-public:
-    MazeWidget(QWidget *parent = nullptr);
-    void setMatrix(const Matrix &matrix);
+    public:
+        explicit MazeWidget(QWidget *parent);
+//        MazeWidget(QWidget *parent = nullptr);
+        void setMatrix(const Matrix &matrix);
+        void clearSolution();
 
-protected:
-    void paintEvent(QPaintEvent *event) override;
+    protected:
+        void paintEvent(QPaintEvent *event) override;
 };
 
 #endif // MAZEWIDGET_H

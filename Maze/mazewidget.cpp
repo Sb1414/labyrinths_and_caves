@@ -2,9 +2,8 @@
 #include <QPainter>
 
 MazeWidget::MazeWidget(QWidget *parent) : QWidget(parent), mazeMatrix(10, 10) {
-    setFixedSize(600, 600);
+    setFixedSize(500, 500);
 }
-
 
 void MazeWidget::setMatrix(const Matrix &matrix) {
     mazeMatrix = matrix;
@@ -16,23 +15,12 @@ void MazeWidget::setSolution(const QVector<QPoint>& solution) {
     update(); // Вызывает paintEvent для перерисовки виджета с учетом решения
 }
 
-QVector<QPoint> convertToQVector(const std::vector<std::vector<int>>& path) {
-    QVector<QPoint> convertedPath;
-    for (size_t i = 0; i < path.size(); ++i) {
-        for (size_t j = 0; j < path[i].size(); ++j) {
-            if (path[i][j] != -1) {
-                convertedPath.append(QPoint(static_cast<int>(j), static_cast<int>(i)));
-            }
-        }
-    }
-    return convertedPath;
+void MazeWidget::clearSolution() {
+    solutionPath.clear();
+    update(); // вызываем update, чтобы перерисовать виджет без пути
 }
 
-void MazeWidget::paintEvent(QPaintEvent* event) {
-    Q_UNUSED(event);
-
-    QPainter painter(this);
-
+void MazeWidget::drawMaze(QPainter& painter) {
     int cellWidth = width() / mazeMatrix.getColumns();
     int cellHeight = height() / mazeMatrix.getRows();
 
@@ -52,9 +40,13 @@ void MazeWidget::paintEvent(QPaintEvent* event) {
             }
         }
     }
+}
 
-    // отрисовка решения
+void MazeWidget::drawSolution(QPainter& painter) {
     int pathSize = solutionPath.size();
+    int cellWidth = width() / mazeMatrix.getColumns();
+    int cellHeight = height() / mazeMatrix.getRows();
+
     for (int i = 0; i < pathSize - 1; i++) {
         QPoint currentPoint = solutionPath[i];
         QPoint nextPoint = solutionPath[i + 1];
@@ -68,4 +60,17 @@ void MazeWidget::paintEvent(QPaintEvent* event) {
         painter.drawLine(startX, startY, endX, endY);
     }
 }
+
+void MazeWidget::paintEvent(QPaintEvent* event) {
+    Q_UNUSED(event);
+
+    QPainter painter(this);
+
+    // Отрисовка лабиринта
+    drawMaze(painter);
+
+    // Отрисовка решения
+    drawSolution(painter);
+}
+
 
