@@ -9,6 +9,10 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->maze->clearSolution();
+    ui->btnSolveMaze->setEnabled(false);
+
+    ui->end_x->setMaximum(ui->spinBoxRows->value());
+    ui->end_y->setMaximum(ui->spinBoxCols->value());
 }
 
 MainWindow::~MainWindow()
@@ -36,6 +40,7 @@ void MainWindow::on_btnGenerateMaze_clicked()
 
         // отображение виджета
         ui->maze->show();
+        ui->btnSolveMaze->setEnabled(true);
     } catch (const std::exception& e) {
         qDebug() << "Exception caught: " << e.what();
     }

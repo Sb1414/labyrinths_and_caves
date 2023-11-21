@@ -7,7 +7,7 @@ void MazeSolver::renderM(std::vector<std::vector<int>> m) {
     std::cout <<  rows << ' ' << cols << std::endl;
     for (size_t i = 0; i < m.size(); i++) {
         for (size_t j = 0; j < m[i].size(); j++) {
-            std::cout << m[i][j] << ' ';
+            std::cout << std::setw(3) << m[i][j] << ' ';
         }
         std::cout << '\n';
     }
@@ -18,6 +18,9 @@ void MazeSolver::parseMaze(std::string file_name) {
     std::ifstream data_maze(file_name);
     if (data_maze.is_open()) {
         data_maze >> rows >> cols;
+        if (rows < 0 || cols < 0 || rows > 50 || cols > 50) {
+            throw std::string{"Incorrect size"};
+        }
         vertical.resize(rows, std::vector<int>(cols, -1));
         horizontal.resize(rows, std::vector<int>(cols, -1));
         for (auto i = 0; i < rows; i++) {
@@ -75,6 +78,8 @@ void MazeSolver::makeWave(std::vector<std::vector<int>> &wave, std::pair<int, in
         }
         q.pop();
     }
+    if (wave[dest.first][dest.second] == -1) 
+        throw std::string{"Path not found"};
 }
 
 std::vector<std::vector<int>> MazeSolver::makePath(std::vector<std::vector<int>> &wave, std::pair<int, int> src, std::pair<int, int> dest) {
@@ -105,8 +110,12 @@ std::vector<std::vector<int>> MazeSolver::makePath(std::vector<std::vector<int>>
 
 std::vector<std::vector<int>> MazeSolver::findPath(std::pair<int, int> src, std::pair<int, int> dest) {
     coordinateValidation(src, dest);
+    std::cout << "coordinateValidation";
     std::vector<std::vector<int>> wave(rows, std::vector<int>(cols, -1));
+    std::cout << "wave";
     makeWave(wave, src, dest);
+    std::cout << "makeWave";
     renderM(wave);
+    std::cout << "renderM";
     return makePath(wave, src, dest);
 }

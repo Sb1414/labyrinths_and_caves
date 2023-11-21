@@ -13,7 +13,6 @@ Matrix::Matrix(int numRows, int numCols) : rows(numRows), cols(numCols) {
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
             sets[i][j] = j +1;
-            horizontal[i][j] = 1;
         }
     }
 }
@@ -50,6 +49,7 @@ void Matrix::generateMaze() {
 
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
+            horizontal[i][j] = 1;
             vertical[i][j] = rand() & 1;
 
             if (j != 0 && vertical[i][j-1] == 0) {

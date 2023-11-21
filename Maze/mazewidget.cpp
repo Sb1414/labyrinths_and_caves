@@ -21,6 +21,7 @@ void MazeWidget::clearSolution() {
 }
 
 void MazeWidget::drawMaze(QPainter& painter) {
+
     int cellWidth = width() / mazeMatrix.getColumns();
     int cellHeight = height() / mazeMatrix.getRows();
 
@@ -41,6 +42,7 @@ void MazeWidget::drawMaze(QPainter& painter) {
         }
     }
 }
+
 
 void MazeWidget::drawSolution(QPainter& painter) {
     int pathSize = solutionPath.size();
@@ -66,11 +68,28 @@ void MazeWidget::paintEvent(QPaintEvent* event) {
 
     QPainter painter(this);
 
-    // Отрисовка лабиринта
-    drawMaze(painter);
+    int cellWidth = width() / mazeMatrix.getColumns();
+    int cellHeight = height() / mazeMatrix.getRows();
 
-    // Отрисовка решения
-    drawSolution(painter);
+    // для отрисовки границ
+    painter.setPen(Qt::green);
+    // верхняя и нижняя границы виджета
+    painter.drawLine(0, 0, width(), 0);
+    painter.drawLine(0, height() - 1, width(), height() - 1);
+
+    // левая и правая границы виджета
+    painter.drawLine(0, 0, 0, height());
+    painter.drawLine(width() - 1, 0, width() - 1, height());
+
+
+    // отрисовка лабиринта
+    QPainter painter2(this);
+    painter2.setPen(Qt::red);
+    drawMaze(painter2);
+
+    QPainter painterSolution(this);
+    // отрисовка решения
+    drawSolution(painterSolution);
 }
 
 
