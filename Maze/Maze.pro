@@ -21,8 +21,7 @@ HEADERS += \
     mazeSolver.h \
     mainwindow.h \
     matrix.h \
-    mazewidget.h \
-    s21_vector.h
+    mazewidget.h
 
 FORMS += \
     mainwindow.ui
