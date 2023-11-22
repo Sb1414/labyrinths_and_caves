@@ -4,6 +4,12 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <cstdlib> // for rand function
+#include <cstdlib>   // Подключаем библиотеку для работы с функциями, связанными с генерацией случайных чисел
+#include <ctime>
+#include <algorithm>
+#include <random>
+#include <filesystem>
 
 class Matrix {
 private:
@@ -14,6 +20,7 @@ private:
     std::vector<std::vector<int>> sets;
 
 public:
+    Matrix() : rows(0), cols(0) {}
     Matrix(int numRows, int numCols);
     int getRows() const;
     int getColumns() const;
@@ -24,6 +31,7 @@ public:
     void checkHorizontalInRow(int i);
     void generateMaze();
     void saveMaze(const std::string& fileName) const;
+    void loadMaze(const std::string& fileName);
 };
 
 #endif // MATRIX_H
