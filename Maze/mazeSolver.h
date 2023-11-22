@@ -17,7 +17,7 @@ private:
 
     void coordinateValidation(std::pair<int, int> src, std::pair<int, int> dest);
     void makeWave(std::vector<std::vector<int>> &wave, std::pair<int, int> src, std::pair<int, int> dest);
-    std::vector<std::vector<int>> makePath(std::vector<std::vector<int>> &wave, std::pair<int, int> src, std::pair<int, int> dest);
+    std::vector<std::vector<int>> makePath(std::vector<std::vector<int>> &wave, std::pair<int, int> dest);
 
 public:
     MazeSolver();

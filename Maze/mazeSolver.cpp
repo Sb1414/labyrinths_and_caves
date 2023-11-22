@@ -35,22 +35,20 @@ void MazeSolver::parseMaze(std::string file_name) {
         }
     }
     data_maze.close();
-    // renderM(vertical);
-    // renderM(horizontal);
 }
 
 void MazeSolver::coordinateValidation(std::pair<int, int> src, std::pair<int, int> dest) {
     if (src == dest) {
         throw std::string{"Incorrect coordinates: start and finish coordinates are same"};
     }
-    if (src.first < 0 || src.first >= rows || src.second < 0 || src.second >= rows ||
-        dest.first < 0 || dest.first >= cols || dest.second < 0 || dest.second >= rows) {
+    if (src.first < 0 || src.first >= rows || src.second < 0 || src.second >= cols ||
+        dest.first < 0 || dest.first >= rows || dest.second < 0 || dest.second >= cols) {
         throw std::string{"Incorrect coordinates: out of range"};
     }
 }
 
 void MazeSolver::makeWave(std::vector<std::vector<int>> &wave, std::pair<int, int> src, std::pair<int, int> dest) {
-    std::queue<std::pair<int, int>> q;
+    std::queue<std::pair<int, int>> q;    
     wave[src.first][src.second] = 0;
     q.push(src);
     while (!q.empty()) {
@@ -78,11 +76,11 @@ void MazeSolver::makeWave(std::vector<std::vector<int>> &wave, std::pair<int, in
         }
         q.pop();
     }
-    if (wave[dest.first][dest.second] == -1) 
-        throw std::string{"Path not found"};
+//    if (wave[dest.first][dest.second] == -1)
+//        throw std::runtime_error("Path not found");
 }
 
-std::vector<std::vector<int>> MazeSolver::makePath(std::vector<std::vector<int>> &wave, std::pair<int, int> src, std::pair<int, int> dest) {
+std::vector<std::vector<int>> MazeSolver::makePath(std::vector<std::vector<int>> &wave, std::pair<int, int> dest) {
     std::vector<std::vector<int>> path(rows, std::vector<int>(cols, -1));
     auto cell = dest;
     for (int n = wave[dest.first][dest.second] - 1; n >= 0; n--) {
@@ -109,13 +107,8 @@ std::vector<std::vector<int>> MazeSolver::makePath(std::vector<std::vector<int>>
 }
 
 std::vector<std::vector<int>> MazeSolver::findPath(std::pair<int, int> src, std::pair<int, int> dest) {
-    coordinateValidation(src, dest);
-    std::cout << "coordinateValidation";
+//    coordinateValidation(src, dest);
     std::vector<std::vector<int>> wave(rows, std::vector<int>(cols, -1));
-    std::cout << "wave";
     makeWave(wave, src, dest);
-    std::cout << "makeWave";
-    renderM(wave);
-    std::cout << "renderM";
-    return makePath(wave, src, dest);
+    return makePath(wave, dest);
 }
