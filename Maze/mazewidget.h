@@ -20,6 +20,7 @@ class MazeWidget : public QWidget {
         explicit MazeWidget(QWidget *parent);
 //        MazeWidget(QWidget *parent = nullptr);
         void setMatrix(const Matrix &matrix);
+        void loadMazeFromFile(const QString& filePath);
         void clearSolution();
 
     protected:
