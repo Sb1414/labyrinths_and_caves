@@ -2,6 +2,7 @@
 #include "MazeController.h"
 #include "ui_mainwindow.h"
 #include <QMessageBox>
+#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -11,8 +12,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->maze->clearSolution();
     ui->btnSolveMaze->setEnabled(false);
 
-    ui->end_x->setMaximum(ui->spinBoxRows->value());
-    ui->end_y->setMaximum(ui->spinBoxCols->value());
+    ui->end_x->setMaximum(ui->spinBoxCols->value());
+    ui->end_y->setMaximum(ui->spinBoxRows->value());
 }
 
 MainWindow::~MainWindow()
@@ -41,6 +42,10 @@ void MainWindow::on_btnGenerateMaze_clicked()
         // отображение виджета
         ui->maze->show();
         ui->btnSolveMaze->setEnabled(true);
+        QString tmp = QString::number(numRows) + " - " + QString::number(numCols) ;
+
+        QMessageBox::information(this, tmp, tmp);
+
     } catch (const std::exception& e) {
         qDebug() << "Exception caught: " << e.what();
     }
@@ -61,13 +66,18 @@ void MainWindow::on_btnSolveMaze_clicked()
             throw std::runtime_error("Start and end coordinates are the same.");
         }
 
-        std::pair<int, int> src(start_x-1, start_y-1);  // начальные координаты
-        std::pair<int, int> dest(end_x-1, end_y-1);  // конечные координаты
+        std::pair<int, int> src(start_y-1, start_x-1);  // начальные координаты
+        std::pair<int, int> dest(end_y-1, end_x-1);  // конечные координаты
 
         mazeSolver.parseMaze("awd.txt");
         std::cout << "parseMaze был\n";
+        QString tmp = QString::number(start_x) + " - " + QString::number(start_y) + " : " + QString::number(end_x) + " - " + QString::number(end_y) ;
+
+        QMessageBox::information(this, tmp, tmp);
 
         std::vector<std::vector<int>> wave = mazeSolver.findPath(src, dest);
+
+        QMessageBox::information(this, tmp, tmp);
 
         std::cout << "findPath был\n";
         QVector<QPoint> path;
@@ -96,12 +106,43 @@ void MainWindow::on_btnSolveMaze_clicked()
 
 void MainWindow::on_spinBoxRows_valueChanged(int arg1)
 {
-    ui->end_x->setMaximum(ui->spinBoxRows->value());
+    ui->end_y->setMaximum(arg1);
 }
 
 
 void MainWindow::on_spinBoxCols_valueChanged(int arg1)
 {
-    ui->end_y->setMaximum(ui->spinBoxCols->value());
+    ui->end_x->setMaximum(arg1);
+}
+
+
+void MainWindow::on_btnLoadMazeFromFile_clicked()
+{
+    try {
+        MazeSolver mazeSolver;
+
+        QString filePath = QFileDialog::getOpenFileName(this, tr("Open Maze File"), "", tr("Text Files (*.txt)"));
+        if (filePath.isEmpty()) {
+            return;
+        }
+        std::string fileName = filePath.toStdString();
+
+        Matrix loadedMatrix;
+        loadedMatrix.loadMaze(fileName);
+        ui->maze->setMatrix(loadedMatrix);
+
+        ui->maze->loadMazeFromFile(filePath);
+
+        ui->maze->update();
+        ui->btnSolveMaze->setEnabled(true);
+        ui->spinBoxRows->setValue(loadedMatrix.getRows());
+        ui->spinBoxCols->setValue(loadedMatrix.getColumns());
+        ui->end_x->setValue(loadedMatrix.getColumns());
+        ui->end_x->setMaximum(loadedMatrix.getColumns());
+        ui->end_y->setValue(loadedMatrix.getRows());
+        ui->end_y->setMaximum(loadedMatrix.getRows());
+    } catch (const std::exception& e) {
+        QMessageBox::critical(this, "Error", e.what());
+    }
 }
 

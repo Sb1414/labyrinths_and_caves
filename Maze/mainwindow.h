@@ -23,6 +23,8 @@ private slots:
     void on_spinBoxRows_valueChanged(int arg1);
     void on_spinBoxCols_valueChanged(int arg1);
 
+    void on_btnLoadMazeFromFile_clicked();
+
 private:
     Ui::MainWindow *ui;
 //    MazeController controller_;
