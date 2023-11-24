@@ -21,7 +21,7 @@ test: clean
 	rm -rf tests/tests
 
 dvi:
-	open Read_me.html
+open README.md
 
 dist:
 	rm -rf Archive_Maze/
